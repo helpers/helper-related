@@ -10,12 +10,43 @@ npm i helper-related --save
 
 ## Usage
 
+This is an async helper that will only work with Template, Assemble, or Verb. 
+
+**Register the helper**
+
 ```js
-var helperRelated = require('helper-related');
+app.helper('related', require('helper-related'));
 ```
 
-## API
+**Use in templates**
 
+
+
+```js
+{%= related(['remarkable', 'micromatch']) %}
+```
+
+
+Results in a list that looks something like:
+
+```markdown
+* [remarkable](https://github.com/jonschlinkert/remarkable): Markdown parser, done right. 100% Commonmark support, extensions, syntax plugins, high speed - all in one.
+* [micromatch](https://github.com/jonschlinkert/micromatch): Glob matching for javascript/node.js. A faster alternative to minimatch (10-45x faster on avg), with all the features you're used to using in your Grunt and gulp tasks.
+```
+
+
+If the array gets long, you can format it like this if you want:
+
+```js
+{%= related([
+  'git-branch', 
+  'git-repo-name', 
+  'git-user-email', 
+  'git-user-name', 
+  'git-username', 
+  'github-repo-url'
+]) %}   
+```
 
 
 ## Run tests
