@@ -26,13 +26,12 @@ module.exports = function (options) {
       throw new TypeError('helper-related expects a string or array.');
     }
 
-    if (options && options.verbose) {
+    if (options && options.silent !== true) {
       console.log(chalk.gray('%s'), '  helper-related: getting related projects from npm.');
     }
 
     get(repos, patterns, function (err, pkgs) {
       if (err) {
-        // print out helper errors, they're harder to debug
         console.error(chalk.red('helper-related: %j'), err);
         return cb(err);
       }
@@ -40,7 +39,6 @@ module.exports = function (options) {
         next(null, fn(pkg));
       }, function (err, arr) {
         if (err) {
-        // print out helper errors, they're harder to debug
           console.error(chalk.red('helper-related: %j'), err);
           return cb(err);
         }
@@ -52,6 +50,6 @@ module.exports = function (options) {
 };
 
 function linkify(pkg) {
-  return mdu.link(pkg.name, pkg.homepage, pkg.description)
-    + ': '+ pkg.description;
+  var link = mdu.link(pkg.name, pkg.homepage) + ': '+ pkg.description;
+  return mdu.listitem(link);
 }
