@@ -1,0 +1,42 @@
+{
+  "name": "helper-related",
+  "description": "Template helper for generating a list of related projects on a github repo.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jonschlinkert/helper-related",
+  "author": {
+    "name": "Jon Schlinkert",
+    "url": "https://github.com/jonschlinkert"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jonschlinkert/helper-related.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/helper-related/issues"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/jonschlinkert/helper-related/blob/master/LICENSE"
+  },
+  "files": [
+    "index.js"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "async": "^0.9.0",
+    "chalk": "^1.0.0",
+    "get-pkgs": "^0.2.0",
+    "markdown-utils": "^0.3.0"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
+  },
+  "keywords": []
+}
