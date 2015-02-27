@@ -20,9 +20,9 @@ describe('related', function () {
   });
 
   it('should get an array of package.json files:', function (done) {
-    related(['verb', 'assemble'], function (err, res) {
-      res.should.match(/\[verb\]/);
-      res.should.match(/\[assemble\]/);
+    related(['remarkable', 'micromatch'], function (err, res) {
+      res.should.match(/\[remarkable\]/);
+      res.should.match(/\[micromatch\]/);
       done();
     });
   });
