@@ -1,7 +1,7 @@
 {
   "name": "helper-related",
-  "description": "Template helper for generating a list of related projects on a github repo.",
-  "version": "0.1.0",
+  "description": "Template helper for generating a list of links to the homepages of related GitHub/npm projects.",
+  "version": "0.1.1",
   "homepage": "https://github.com/jonschlinkert/helper-related",
   "author": {
     "name": "Jon Schlinkert",
@@ -38,5 +38,18 @@
     "mocha": "*",
     "should": "*"
   },
-  "keywords": []
+  "keywords": [
+    "async",
+    "github",
+    "helper",
+    "homepage",
+    "links",
+    "list",
+    "npm",
+    "related",
+    "repo",
+    "repos",
+    "resolve",
+    "template"
+  ]
 }
