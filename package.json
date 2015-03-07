@@ -2,21 +2,21 @@
   "name": "helper-related",
   "description": "Template helper for generating a list of links to the homepages of related GitHub/npm projects.",
   "version": "0.2.0",
-  "homepage": "https://github.com/jonschlinkert/helper-related",
+  "homepage": "https://github.com/helpers/helper-related",
   "author": {
     "name": "Jon Schlinkert",
     "url": "https://github.com/jonschlinkert"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/jonschlinkert/helper-related.git"
+    "url": "git://github.com/helpers/helper-related.git"
   },
   "bugs": {
-    "url": "https://github.com/jonschlinkert/helper-related/issues"
+    "url": "https://github.com/helpers/helper-related/issues"
   },
   "license": {
     "type": "MIT",
-    "url": "https://github.com/jonschlinkert/helper-related/blob/master/LICENSE"
+    "url": "https://github.com/helpers/helper-related/blob/master/LICENSE"
   },
   "files": [
     "index.js"
