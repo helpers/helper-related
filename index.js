@@ -9,12 +9,13 @@
 
 var chalk = require('chalk');
 var async = require('async');
+var symbol = require('log-symbols');
 var mdu = require('markdown-utils');
 var get = require('get-pkgs');
 
 module.exports = function (options) {
   options = options || {};
-  var fn = options.linkify || linkify;
+  var linkify = options.linkify || toLink;
 
   return function related(repos, patterns, cb) {
     if (typeof patterns === 'function') {
@@ -27,7 +28,9 @@ module.exports = function (options) {
     }
 
     if (options && options.silent !== true) {
-      console.log(chalk.gray('%s'), '  helper-related: getting related projects from npm.');
+      var msg = '  related helper: getting related projects from npm.';
+      console.log(); // blank line
+      console.log('  ' + symbol.success + chalk.gray(msg));
     }
 
     get(repos, patterns, function (err, pkgs) {
@@ -36,7 +39,7 @@ module.exports = function (options) {
         return cb(err);
       }
       async.mapSeries(pkgs, function (pkg, next) {
-        next(null, fn(pkg));
+        next(null, linkify(pkg, pkgs.length));
       }, function (err, arr) {
         if (err) {
           console.error(chalk.red('helper-related: %j'), err);
@@ -49,7 +52,10 @@ module.exports = function (options) {
   };
 };
 
-function linkify(pkg) {
+function toLink(pkg, num) {
   var link = mdu.link(pkg.name, pkg.homepage) + ': '+ pkg.description;
+  if (num <= 1) {
+    return link;
+  }
   return mdu.listitem(link);
 }
