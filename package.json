@@ -1,7 +1,7 @@
 {
   "name": "helper-related",
   "description": "Template helper for generating a list of links to the homepages of related GitHub/npm projects.",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "homepage": "https://github.com/helpers/helper-related",
   "author": {
     "name": "Jon Schlinkert",
@@ -32,8 +32,7 @@
     "async": "^0.9.0",
     "chalk": "^1.0.0",
     "get-pkgs": "^0.2.0",
-    "log-symbols": "^1.0.2",
-    "markdown-utils": "^0.3.0"
+    "log-symbols": "^1.0.2"
   },
   "devDependencies": {
     "mocha": "*",
