@@ -1,5 +1,5 @@
 /*!
- * helper-related <https://github.com/jonschlinkert/helper-related>
+ * helper-related <https://github.com/helpers/helper-related>
  *
  * Copyright (c) 2015, Jon Schlinkert.
  * Licensed under the MIT License.
@@ -7,6 +7,7 @@
 
 'use strict';
 
+/* deps:mocha */
 var assert = require('assert');
 var should = require('should');
 var related = require('./')();

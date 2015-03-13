@@ -1,5 +1,5 @@
 /*!
- * helper-related <https://github.com/jonschlinkert/helper-related>
+ * helper-related <https://github.com/helpers/helper-related>
  *
  * Copyright (c) 2015, Jon Schlinkert.
  * Licensed under the MIT License.
@@ -10,7 +10,6 @@
 var chalk = require('chalk');
 var async = require('async');
 var symbol = require('log-symbols');
-var mdu = require('markdown-utils');
 var get = require('get-pkgs');
 
 module.exports = function (options) {
@@ -53,9 +52,14 @@ module.exports = function (options) {
 };
 
 function toLink(pkg, num) {
-  var link = mdu.link(pkg.name, pkg.homepage) + ': '+ pkg.description;
+  var res = link(pkg.name, pkg.homepage) + ': '+ pkg.description;
   if (num <= 1) {
-    return link;
+    return res;
   }
-  return mdu.listitem(link);
+  return ' * ' + res;
+}
+
+function link(anchor, href, title) {
+  title = title ? ' "' + title + '"' : '';
+  return '[' + anchor + '](' + href + title + ')';
 }
