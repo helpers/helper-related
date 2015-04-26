@@ -13,32 +13,28 @@ var should = require('should');
 var related = require('./')();
 
 describe('related', function () {
-  it('should get a package.json from npm:', function (done) {
+  it('should get a package.json from npm:', function (cb) {
     related('verb', function (err, res) {
       res.should.match(/\[verb\]/);
-      done();
+      cb();
     });
   });
 
-  it('should get an array of package.json files:', function (done) {
+  it('should get an array of package.json files:', function (cb) {
     related(['remarkable', 'micromatch'], function (err, res) {
       res.should.match(/\[remarkable\]/);
       res.should.match(/\[micromatch\]/);
-      done();
+      cb();
     });
   });
 
-  it('should filter package properties using glob patterns:', function (done) {
-    related(['verb', 'assemble'], ['hom*'], function (err, res) {
-      res.should.match(/https:\/\//);
-      done();
-    });
-  });
-
-  it('should filter package properties using glob patterns:', function (done) {
-    related(['verb', 'assemble'], ['name'], function (err, res) {
-      res.should.not.match(/https:\/\//);
-      done();
+  it('should truncate the description to the given number of words:', function (cb) {
+    related(['remarkable', 'micromatch'], {words: 10}, function (err, res) {
+      res.should.equal([
+        '* [micromatch](https://github.com/jonschlinkert/micromatch): Glob matching for javascript/node.js. A drop-in replacement and faster alternative… [more](https://github.com/jonschlinkert/micromatch)',
+        '* [remarkable](https://github.com/jonschlinkert/remarkable): Markdown parser, done right. 100% Commonmark support, extensions, syntax plugins,… [more](https://github.com/jonschlinkert/remarkable)'
+      ].join('\n'));
+      cb();
     });
   });
 
