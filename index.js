@@ -83,7 +83,7 @@ function truncate(str, url, words) {
 }
 
 function message() {
-  var msg = ' related helper: getting related projects from npm.';
+  var msg = 'helper-related: getting related projects from npm.';
   console.log(); // blank line
-  console.log('  ' + symbol.success + chalk.gray(msg));
+  console.log('  ' + symbol.success + '  ' + chalk.gray(msg));
 }
