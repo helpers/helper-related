@@ -58,8 +58,7 @@ module.exports = function (options) {
 function toLink(pkg, num, words) {
   var res = '';
   res += link(pkg.name, pkg.homepage);
-  res += ': ';
-  res += description(pkg, words);
+  res += truncate(pkg.description, pkg.homepage, words);
   if (num <= 1) return res;
   return '* ' + res;
 }
@@ -69,23 +68,28 @@ function link(anchor, href, title) {
   return '[' + anchor + '](' + href + title + ')';
 }
 
-function description(pkg, words) {
+function truncate(description, homepage, words) {
+  if (!description.length) return '';
+  var arr = description.split(' ');
+  var res = '';
+  var max = 15;
+
+  if (arr.length === 1) {
+    return ': ' + arr[0];
+  }
   if (words === false) {
-    return pkg.description;
+    max = undefined;
   }
-  words = typeof words === 'number' ? words : 15;
-  return truncate(pkg.description, pkg.homepage, words);
-}
-
-function truncate(str, url, max) {
-  if (!str.length) return '';
-  var arr = str.split(' ');
-  var res = arr.slice(0, max).join(' ');
-
-  if (res.length < str.length) {
-    res += '… [more](' + url + ')';
+  if (typeof words === 'number') {
+    max = words;
   }
-  return res;
+
+  res = arr.slice(0, max).join(' ');
+
+  if (res.length < description.length) {
+    res += '… [more](' + homepage + ')';
+  }
+  return ': ' + res;
 }
 
 function message() {
