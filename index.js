@@ -27,7 +27,7 @@ module.exports = function (options) {
     }
 
     opts = extend({}, options, opts);
-    var linkify = opts.linkify || toLink;
+    var linkify = typeof opts.linkify === 'function' ? opts.linkify : toLink;
     if (opts && opts.silent !== true) message();
     var words = opts.words || opts.truncate;
 
@@ -58,7 +58,6 @@ module.exports = function (options) {
 function toLink(pkg, num, words) {
   var res = '';
   res += link(pkg.name, pkg.homepage);
-  res += ': ';
   res += truncate(pkg.description, pkg.homepage, words);
   if (num <= 1) return res;
   return '* ' + res;
@@ -69,17 +68,28 @@ function link(anchor, href, title) {
   return '[' + anchor + '](' + href + title + ')';
 }
 
-function truncate(str, url, words) {
-  if (!str || words === false) return '';
-  var arr = str.split(' ');
-  var len = words || arr.length;
-  var max = len <= 15 ? len : 15;
-  var res = arr.slice(0, max).join(' ');
+function truncate(description, homepage, words) {
+  if (!description.length) return '';
+  var arr = description.split(' ');
+  var res = '';
+  var max = 15;
 
-  if (res.length < str.length) {
-    res += '… [more](' + url + ')';
+  if (arr.length === 1) {
+    return ': ' + arr[0];
   }
-  return res;
+  if (words === false) {
+    max = undefined;
+  }
+  if (typeof words === 'number') {
+    max = words;
+  }
+
+  res = arr.slice(0, max).join(' ');
+
+  if (res.length < description.length) {
+    res += '… [more](' + homepage + ')';
+  }
+  return ': ' + res;
 }
 
 function message() {
