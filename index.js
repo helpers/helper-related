@@ -27,7 +27,7 @@ module.exports = function (options) {
     }
 
     opts = extend({}, options, opts);
-    var linkify = opts.linkify || toLink;
+    var linkify = typeof opts.linkify === 'function' ? opts.linkify : toLink;
     if (opts && opts.silent !== true) message();
     var words = opts.words || opts.truncate;
 
@@ -59,7 +59,7 @@ function toLink(pkg, num, words) {
   var res = '';
   res += link(pkg.name, pkg.homepage);
   res += ': ';
-  res += truncate(pkg.description, pkg.homepage, words);
+  res += description(pkg, words);
   if (num <= 1) return res;
   return '* ' + res;
 }
@@ -69,11 +69,17 @@ function link(anchor, href, title) {
   return '[' + anchor + '](' + href + title + ')';
 }
 
-function truncate(str, url, words) {
-  if (!str || words === false) return '';
+function description(pkg, words) {
+  if (words === false) {
+    return pkg.description;
+  }
+  words = typeof words === 'number' ? words : 15;
+  return truncate(pkg.description, pkg.homepage, words);
+}
+
+function truncate(str, url, max) {
+  if (!str.length) return '';
   var arr = str.split(' ');
-  var len = words || arr.length;
-  var max = len <= 15 ? len : 15;
   var res = arr.slice(0, max).join(' ');
 
   if (res.length < str.length) {
