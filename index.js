@@ -9,6 +9,7 @@
 
 var chalk = require('chalk');
 var async = require('async');
+var filter = require('arr-filter');
 var symbol = require('log-symbols');
 var extend = require('extend-shallow');
 var get = require('get-pkgs');
@@ -22,14 +23,19 @@ module.exports = function (options) {
     }
 
     if (typeof opts === 'function') {
-      cb = opts;
-      opts = {};
+      cb = opts; opts = {};
     }
 
     opts = extend({}, options, opts);
     var linkify = opts.linkify || toLink;
     if (opts && opts.silent !== true) message();
     var words = opts.words || opts.truncate;
+
+    if (typeof opts.remove !== 'undefined') {
+      repos = filter(repos, function (name) {
+        return arrayify(opts.remove).indexOf(name) === -1;
+      });
+    }
 
     get(repos, '*', function (err, pkgs) {
       if (err) {
@@ -75,11 +81,14 @@ function truncate(str, url, words) {
   var len = words || arr.length;
   var max = len <= 15 ? len : 15;
   var res = arr.slice(0, max).join(' ');
-
   if (res.length < str.length) {
     res += '… [more](' + url + ')';
   }
   return res;
+}
+
+function arrayify(val) {
+  return Array.isArray(val) ? val : [val];
 }
 
 function message() {
