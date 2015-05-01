@@ -28,6 +28,28 @@ describe('related', function () {
     });
   });
 
+  it('should remove a name passed on `options.remove`:', function (cb) {
+    var list = ['remarkable', 'micromatch', 'verb', 'assemble'];
+    related(list, {remove: 'verb'}, function (err, res) {
+      res.should.match(/\[assemble\]/);
+      res.should.not.match(/\[verb\]/);
+      res.should.match(/\[remarkable\]/);
+      res.should.match(/\[micromatch\]/);
+      cb();
+    });
+  });
+
+  it('should remove an array of names passed on `options.remove`:', function (cb) {
+    var list = ['remarkable', 'micromatch', 'verb', 'assemble'];
+    related(list, {remove: ['verb', 'micromatch']}, function (err, res) {
+      res.should.match(/\[assemble\]/);
+      res.should.not.match(/\[verb\]/);
+      res.should.match(/\[remarkable\]/);
+      res.should.not.match(/\[micromatch\]/);
+      cb();
+    });
+  });
+
   it('should truncate the description to the given number of words:', function (cb) {
     related(['remarkable', 'micromatch'], {words: 10}, function (err, res) {
       res.should.equal([
