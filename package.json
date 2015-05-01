@@ -1,7 +1,7 @@
 {
   "name": "helper-related",
   "description": "Template helper for generating a list of links to the homepages of related GitHub/npm projects.",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "homepage": "https://github.com/helpers/helper-related",
   "author": {
     "name": "Jon Schlinkert",
