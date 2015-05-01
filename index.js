@@ -28,7 +28,6 @@ module.exports = function (options) {
 
     opts = extend({}, options, opts);
     var linkify = typeof opts.linkify === 'function' ? opts.linkify : toLink;
-    if (opts && opts.silent !== true) message();
     var words = opts.words || opts.truncate;
 
     if (typeof opts.remove !== 'undefined') {
@@ -36,6 +35,9 @@ module.exports = function (options) {
         return arrayify(opts.remove).indexOf(name) === -1;
       });
     }
+
+    // hide message if `silent` is enabled
+    message(options);
 
     get(repos, '*', function (err, pkgs) {
       if (err) {
@@ -102,8 +104,10 @@ function arrayify(val) {
   return Array.isArray(val) ? val : [val];
 }
 
-function message() {
-  var msg = 'helper-related: getting related projects from npm.';
-  console.log(); // blank line
-  console.log('  ' + symbol.success + '  ' + chalk.gray(msg));
+function message(options) {
+  if (!options || options && options.silent !== true) {
+    var msg = 'helper-related: getting related projects from npm.';
+    console.log(); // blank line
+    console.log('  ' + symbol.success + '  ' + chalk.gray(msg));
+  }
 }
