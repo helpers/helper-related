@@ -95,7 +95,7 @@ function truncate(description, homepage, words) {
   res = arr.slice(0, max).join(' ');
 
   if (res.length < description.length) {
-    res += '… [more](' + homepage + ')';
+    res += '… [more](' + homepage.replace('#readme', '') + ')';
   }
   return ': ' + res;
 }
