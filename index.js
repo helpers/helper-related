@@ -65,8 +65,9 @@ module.exports = function (options) {
 
 function toLink(pkg, num, words) {
   var res = '';
-  res += link(pkg.name, pkg.homepage);
-  res += truncate(pkg.description, pkg.homepage, words);
+  var homepage = pkg.homepage.replace('#readme', '')
+  res += link(pkg.name, homepage);
+  res += truncate(pkg.description, homepage, words);
   if (num <= 1) return res;
   return '* ' + res;
 }
@@ -95,7 +96,7 @@ function truncate(description, homepage, words) {
   res = arr.slice(0, max).join(' ');
 
   if (res.length < description.length) {
-    res += '… [more](' + homepage.replace('#readme', '') + ')';
+    res += '… [more](' + homepage + ')';
   }
   return ': ' + res;
 }
