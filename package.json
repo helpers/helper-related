@@ -1,7 +1,7 @@
 {
   "name": "helper-related",
   "description": "Template helper for generating a list of links to the homepages of related GitHub/npm projects.",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "homepage": "https://github.com/helpers/helper-related",
   "author": {
     "name": "Jon Schlinkert",
@@ -14,10 +14,7 @@
   "bugs": {
     "url": "https://github.com/helpers/helper-related/issues"
   },
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/helpers/helper-related/blob/master/LICENSE"
-  },
+  "license": "MIT",
   "files": [
     "index.js"
   ],
@@ -29,11 +26,13 @@
     "test": "mocha"
   },
   "dependencies": {
+    "ansi-gray": "^0.1.1",
+    "ansi-red": "^0.1.1",
     "arr-filter": "^1.1.0",
     "async": "^0.9.0",
-    "chalk": "^1.0.0",
     "extend-shallow": "^1.1.2",
     "get-pkgs": "^0.2.0",
+    "get-value": "^1.1.5",
     "log-symbols": "^1.0.2"
   },
   "devDependencies": {
