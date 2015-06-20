@@ -7,15 +7,18 @@
 
 'use strict';
 
-var chalk = require('chalk');
+var red = require('ansi-red');
+var gray = require('ansi-gray');
 var async = require('async');
 var filter = require('arr-filter');
 var symbol = require('log-symbols');
 var extend = require('extend-shallow');
-var get = require('get-pkgs');
+var getPkgs = require('get-pkgs');
+var get = require('get-value');
 
 module.exports = function (options) {
   options = options || {};
+  var configProp = options.configProp || 'metadata';
 
   return function related(repos, opts, cb) {
     if (typeof repos !== 'string' && !Array.isArray(repos)) {
@@ -24,6 +27,13 @@ module.exports = function (options) {
 
     if (typeof opts === 'function') {
       cb = opts; opts = {};
+    }
+
+    // allow a prop-string to be passed: eg: `related("some.list")`,
+    // so that `get()` can resolve the value from the context
+    if (this && this.context && typeof repos === 'string') {
+      var res = get(this.context, [configProp, repos].join('.'));
+      if (res) repos = res;
     }
 
     opts = extend({}, options, opts);
@@ -39,9 +49,9 @@ module.exports = function (options) {
     // hide message if `silent` is enabled
     message(options);
 
-    get(repos, '*', function (err, pkgs) {
+    getPkgs(repos, '*', function (err, pkgs) {
       if (err) {
-        console.error(chalk.red('helper-related: %j'), err);
+        console.error(red('helper-related: %j'), err);
         return cb(err);
       }
 
@@ -108,6 +118,6 @@ function message(options) {
   if (!options || options && options.silent !== true) {
     var msg = 'helper-related: getting related projects from npm.';
     console.log(); // blank line
-    console.log('  ' + symbol.success + '  ' + chalk.gray(msg));
+    console.log('  ' + symbol.success + '  ' + gray(msg));
   }
 }
