@@ -75,8 +75,9 @@ module.exports = function (options) {
 
 function toLink(pkg, num, words) {
   var res = '';
-  res += link(pkg.name, pkg.homepage);
-  res += truncate(pkg.description, pkg.homepage, words);
+  var homepage = pkg.homepage.replace(/#readme$/, '');
+  res += link(pkg.name, homepage);
+  res += truncate(pkg.description, homepage, words);
   if (num <= 1) return res;
   return '* ' + res;
 }
