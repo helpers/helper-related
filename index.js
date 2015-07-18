@@ -9,9 +9,10 @@
 
 var red = require('ansi-red');
 var gray = require('ansi-gray');
+var green = require('ansi-green');
 var async = require('async');
 var filter = require('arr-filter');
-var symbol = require('log-symbols');
+var success = require('success-symbol');
 var extend = require('extend-shallow');
 var getPkgs = require('get-pkgs');
 var get = require('get-value');
@@ -56,11 +57,7 @@ module.exports = function (options) {
       }
 
       pkgs = pkgs.sort(function (a, b) {
-        var aname = a.name.charAt(0);
-        var bname = b.name.charAt(0);
-        return aname > bname
-          ? 1 : aname < bname
-          ? -1 : 0;
+        return a.name.localeCompare(b.name);
       });
 
       async.reduce(pkgs, [], function (acc, pkg, next) {
@@ -119,6 +116,6 @@ function message(options) {
   if (!options || options && options.silent !== true) {
     var msg = 'helper-related: getting related projects from npm.';
     console.log(); // blank line
-    console.log('  ' + symbol.success + '  ' + gray(msg));
+    console.log('  ' + green(success) + '  ' + gray(msg));
   }
 }
