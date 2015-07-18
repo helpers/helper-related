@@ -1,16 +1,10 @@
 {
   "name": "helper-related",
   "description": "Template helper for generating a list of links to the homepages of related GitHub/npm projects.",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "homepage": "https://github.com/helpers/helper-related",
-  "author": {
-    "name": "Jon Schlinkert",
-    "url": "https://github.com/jonschlinkert"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/helpers/helper-related.git"
-  },
+  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "repository": "helpers/helper-related",
   "bugs": {
     "url": "https://github.com/helpers/helper-related/issues"
   },
@@ -27,13 +21,14 @@
   },
   "dependencies": {
     "ansi-gray": "^0.1.1",
+    "ansi-green": "^0.1.1",
     "ansi-red": "^0.1.1",
     "arr-filter": "^1.1.0",
-    "async": "^0.9.0",
-    "extend-shallow": "^1.1.2",
-    "get-pkgs": "^0.2.0",
+    "async": "^1.3.0",
+    "extend-shallow": "^2.0.1",
+    "get-pkgs": "^0.2.1",
     "get-value": "^1.1.5",
-    "log-symbols": "^1.0.2"
+    "success-symbol": "^0.1.0"
   },
   "devDependencies": {
     "mocha": "*",
@@ -52,5 +47,18 @@
     "repos",
     "resolve",
     "template"
-  ]
+  ],
+  "verb": {
+    "related": {
+      "list": [
+        "template-helpers",
+        "helper-reflinks"
+      ]
+    },
+    "reflinks": [
+      "assemble",
+      "verb",
+      "template"
+    ]
+  }
 }
