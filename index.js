@@ -1,23 +1,17 @@
-/*!
- * helper-related <https://github.com/helpers/helper-related>
- *
- * Copyright (c) 2015, Jon Schlinkert.
- * Licensed under the MIT License.
- */
-
 'use strict';
 
 var red = require('ansi-red');
 var gray = require('ansi-gray');
 var green = require('ansi-green');
-var async = require('async');
 var filter = require('arr-filter');
 var success = require('success-symbol');
+var reduce = require('async-array-reduce');
 var extend = require('extend-shallow');
 var getPkgs = require('get-pkgs');
 var get = require('get-value');
 
-module.exports = function (options) {
+
+function helperRelated(options) {
   options = options || {};
   var configProp = options.configProp || 'metadata';
 
@@ -60,7 +54,7 @@ module.exports = function (options) {
         return a.name.localeCompare(b.name);
       });
 
-      async.reduce(pkgs, [], function (acc, pkg, next) {
+      reduce(pkgs, [], function (acc, pkg, next) {
         next(null, acc.concat(linkify(pkg, pkgs.length, words)));
       }, function (err, arr) {
         if (err) return cb(err);
@@ -68,13 +62,15 @@ module.exports = function (options) {
       });
     });
   };
-};
+}
 
 function toLink(pkg, num, words) {
-  var res = '';
   var homepage = pkg.homepage.replace(/#readme$/, '');
-  res += link(pkg.name, homepage);
-  res += truncate(pkg.description, homepage, words);
+  var npm = 'https://www.npmjs.com/package/' + pkg.name;
+  var res = '';
+  res += link(pkg.name, npm);
+  res += truncate(pkg.description, npm, words);
+  res += ' | ' + link('homepage', homepage);
   if (num <= 1) return res;
   return '* ' + res;
 }
@@ -84,7 +80,7 @@ function link(anchor, href, title) {
   return '[' + anchor + '](' + href + title + ')';
 }
 
-function truncate(description, homepage, words) {
+function truncate(description, link, words) {
   if (!description.length) return '';
   var arr = description.split(' ');
   var res = '';
@@ -103,7 +99,7 @@ function truncate(description, homepage, words) {
   res = arr.slice(0, max).join(' ');
 
   if (res.length < description.length) {
-    res += '… [more](' + homepage + ')';
+    res += '… [more](' + link + ')';
   }
   return ': ' + res;
 }
@@ -119,3 +115,9 @@ function message(options) {
     console.log('  ' + green(success) + '  ' + gray(msg));
   }
 }
+
+/**
+ * Expose `helperRelated`
+ */
+
+module.exports = helperRelated;
