@@ -1,78 +1,90 @@
 'use strict';
 
-var red = require('ansi-red');
-var gray = require('ansi-gray');
-var green = require('ansi-green');
-var filter = require('arr-filter');
-var success = require('success-symbol');
-var reduce = require('async-array-reduce');
-var extend = require('extend-shallow');
-var getPkgs = require('get-pkgs');
-var get = require('get-value');
+var utils = require('./utils');
 
-
-function helperRelated(options) {
+function relatedHelper(options) {
   options = options || {};
   var configProp = options.configProp || 'metadata';
 
-  return function related(repos, opts, cb) {
+  if (utils.isValidGlob(options)) {
+    return related.apply(null, arguments);
+  }
+
+  function related(repos, opts, cb) {
+    var args = [].slice.call(arguments);
+    var last = utils.last(args);
+
+    if (typeof last === 'function') {
+      cb = args.pop();
+    }
+
+    if (args.length > 1) {
+      opts = args.pop();
+    }
+
+    opts = utils.extend({}, options, opts);
+
+    // allow a prop-string to be passed: eg: `related("a.b.c")`,
+    // so that `get()` can resolve the value from the context
+    if (this && this.context && typeof repos === 'string') {
+      opts = utils.extend({}, this.options, opts);
+      var res = utils.get(this.context, [configProp, repos].join('.'));
+      if (res) repos = res;
+    }
+
     if (typeof repos !== 'string' && !Array.isArray(repos)) {
       throw new TypeError('helper-related expects a string or array.');
     }
 
-    if (typeof opts === 'function') {
-      cb = opts; opts = {};
-    }
-
-    // allow a prop-string to be passed: eg: `related("some.list")`,
-    // so that `get()` can resolve the value from the context
-    if (this && this.context && typeof repos === 'string') {
-      var res = get(this.context, [configProp, repos].join('.'));
-      if (res) repos = res;
-    }
-
-    opts = extend({}, options, opts);
-    var linkify = typeof opts.linkify === 'function' ? opts.linkify : toLink;
     var words = opts.words || opts.truncate;
+    var link = typeof opts.linkify === 'function'
+      ? opts.linkify
+      : linkify;
 
     if (typeof opts.remove !== 'undefined') {
-      repos = filter(repos, function (name) {
+      repos = utils.filter(repos, function (name) {
         return arrayify(opts.remove).indexOf(name) === -1;
       });
     }
 
-    // hide message if `silent` is enabled
-    message(options);
-
-    getPkgs(repos, '*', function (err, pkgs) {
-      if (err) {
-        console.error(red('helper-related: %j'), err);
-        return cb(err);
-      }
+    utils.getPkgs(repos, function (err, pkgs) {
+      if (err) return cb(err);
 
       pkgs = pkgs.sort(function (a, b) {
         return a.name.localeCompare(b.name);
       });
 
-      reduce(pkgs, [], function (acc, pkg, next) {
-        next(null, acc.concat(linkify(pkg, pkgs.length, words)));
+      utils.reduce(pkgs, [], function (acc, pkg, next) {
+        var bullet = link(pkg, pkgs.length, words);
+        next(null, acc.concat(bullet));
       }, function (err, arr) {
         if (err) return cb(err);
         cb(null, arr.join('\n'));
       });
     });
-  };
+  }
+  return related;
 }
 
-function toLink(pkg, num, words) {
-  var homepage = pkg.homepage.replace(/#readme$/, '');
-  var npm = 'https://www.npmjs.com/package/' + pkg.name;
+function toLink(config, options) {
+  options = options || {};
+  var url = options.url || 'https://www.npmjs.com/package/';
+  var name = config.name;
+  var count = options.count || 0;
+  var repo = url + name;
+
   var res = '';
-  res += link(pkg.name, npm);
-  res += truncate(pkg.description, npm, words);
-  res += ' | ' + link('homepage', homepage);
-  if (num <= 1) return res;
+  res += link(name, repo);
+  res += truncate(config.description, repo, options.wordLimit);
+  res += ' | ';
+  res += link('homepage', config.homepage);
+
+  if (count <= 1) return res;
   return '* ' + res;
+}
+
+function linkify(pkg, num, words) {
+  return toLink(pkg, {count: num, wordLimit: words});
 }
 
 function link(anchor, href, title) {
@@ -97,7 +109,6 @@ function truncate(description, link, words) {
   }
 
   res = arr.slice(0, max).join(' ');
-
   if (res.length < description.length) {
     res += '… [more](' + link + ')';
   }
@@ -108,16 +119,8 @@ function arrayify(val) {
   return Array.isArray(val) ? val : [val];
 }
 
-function message(options) {
-  if (!options || options && options.silent !== true) {
-    var msg = 'helper-related: getting related projects from npm.';
-    console.log(); // blank line
-    console.log('  ' + green(success) + '  ' + gray(msg));
-  }
-}
-
 /**
- * Expose `helperRelated`
+ * Expose `relatedHelper`
  */
 
-module.exports = helperRelated;
+module.exports = relatedHelper;
