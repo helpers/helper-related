@@ -20,17 +20,18 @@
     "test": "mocha"
   },
   "dependencies": {
-    "ansi-gray": "^0.1.1",
-    "ansi-green": "^0.1.1",
-    "ansi-red": "^0.1.1",
     "arr-filter": "^1.1.1",
     "async-array-reduce": "^0.1.0",
     "extend-shallow": "^2.0.1",
     "get-pkgs": "^0.2.2",
     "get-value": "^1.1.5",
-    "success-symbol": "^0.1.0"
+    "is-valid-glob": "^0.3.0",
+    "lazy-cache": "^0.2.3"
   },
   "devDependencies": {
+    "assemble-core": "^0.1.1",
+    "engine-assemble": "^0.4.1",
+    "engine-base": "^0.1.2",
     "mocha": "*",
     "should": "*"
   },
@@ -51,14 +52,15 @@
   "verb": {
     "related": {
       "list": [
+        "assemble",
+        "handlebars-helpers",
+        "helper-reflinks",
         "template-helpers",
-        "helper-reflinks"
+        "verb"
       ]
     },
     "reflinks": [
-      "assemble",
-      "verb",
-      "template"
+      "assemble"
     ]
   }
 }
