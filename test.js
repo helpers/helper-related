@@ -111,7 +111,7 @@ describe('helper', function () {
 
   beforeEach(function () {
     app = assemble();
-    app.engine('hbs', require('engine-assemble'));
+    app.engine('hbs', require('engine-handlebars'));
     app.engine('md', require('engine-base'));
 
     // custom view collections
@@ -122,7 +122,7 @@ describe('helper', function () {
     app.asyncHelper('related', helper(app.options));
   });
 
-  it('should work with engine-handlebars:', function (cb) {
+  it('should work with handlebars:', function (cb) {
     this.timeout(2000);
     app.page('abc', {content: 'foo {{related list}} bar'})
       .render({list: ['micromatch']}, function (err, res) {
