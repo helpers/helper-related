@@ -57,7 +57,9 @@
         "handlebars-helpers",
         "helper-reflinks",
         "template-helpers",
-        "verb"
+        "verb",
+        "remarkable",
+        "micromatch"
       ]
     },
     "reflinks": [
