@@ -28,8 +28,10 @@ function relatedHelper(options) {
     // so that `get()` can resolve the value from the context
     if (this && this.context && typeof repos === 'string') {
       opts = utils.extend({}, this.options, opts);
-      var res = utils.get(this.context, [configProp, repos].join('.'));
-      if (res) repos = res;
+      try {
+        var res = utils.get(this.context, [configProp, repos].join('.'));
+        if (res) repos = res;
+      } catch (err) {}
     }
 
     if (typeof repos !== 'string' && !Array.isArray(repos)) {
@@ -43,7 +45,7 @@ function relatedHelper(options) {
 
     if (typeof opts.remove !== 'undefined') {
       repos = utils.filter(repos, function (name) {
-        return arrayify(opts.remove).indexOf(name) === -1;
+        return utils.arrayify(opts.remove).indexOf(name) === -1;
       });
     }
 
@@ -113,10 +115,6 @@ function truncate(description, link, words) {
     res += '… [more](' + link + ')';
   }
   return ': ' + res;
-}
-
-function arrayify(val) {
-  return Array.isArray(val) ? val : [val];
 }
 
 /**

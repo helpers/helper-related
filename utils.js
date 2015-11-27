@@ -16,7 +16,12 @@ require('is-valid-glob', 'isValidGlob');
 require('get-value', 'get');
 require = fn;
 
-utils.last = function (arr) {
+utils.arrayify = function(val) {
+  if (!val) return [];
+  return Array.isArray(val) ? val : [val];
+};
+
+utils.last = function(arr) {
   return arr[arr.length - 1];
 };
 
