@@ -163,7 +163,6 @@ describe('helper', function () {
         res.content.should.match(/\[micromatch\]/);
         cb();
       });
-    cb();
   });
 
   it('should use configProp:', function (cb) {
@@ -174,12 +173,11 @@ describe('helper', function () {
     }));
 
     app.data('foo.a.b.c', ['micromatch']);
-    app.post('xyz', {content: 'foo <%= related("a.b.c") %> bar'})
+    app.post('xyz', {content: 'whatever <%= related("a.b.c") %> blah'})
       .render(function (err, res) {
         if (err) return cb(err);
         res.content.should.match(/\[micromatch\]/);
         cb();
       });
-    cb();
   });
 });

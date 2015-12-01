@@ -8,11 +8,11 @@ var utils = require('lazy-cache')(require);
 var fn = require;
 
 require = utils;
-require('arr-filter', 'filter');
+require('is-valid-glob', 'isValidGlob');
 require('async-array-reduce', 'reduce');
 require('extend-shallow', 'extend');
+require('arr-filter', 'filter');
 require('get-pkgs', 'getPkgs');
-require('is-valid-glob', 'isValidGlob');
 require('get-value', 'get');
 require = fn;
 

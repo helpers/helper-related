@@ -1,5 +1,7 @@
 'use strict';
 
+var success = require('success-symbol');
+var green = require('ansi-green');
 var utils = require('./utils');
 
 function relatedHelper(options) {
@@ -7,7 +9,8 @@ function relatedHelper(options) {
   var configProp = options.configProp || 'metadata';
 
   if (utils.isValidGlob(options)) {
-    return related.apply(null, arguments);
+    related.apply(null, arguments);
+    return;
   }
 
   function related(repos, opts, cb) {
@@ -49,6 +52,11 @@ function relatedHelper(options) {
       });
     }
 
+    if (opts.verbose) {
+      spinner();
+      process.stdout.write(' downloading related repos');
+    }
+
     utils.getPkgs(repos, function (err, pkgs) {
       if (err) return cb(err);
 
@@ -61,11 +69,33 @@ function relatedHelper(options) {
         next(null, acc.concat(bullet));
       }, function (err, arr) {
         if (err) return cb(err);
+
+        if (opts.verbose) {
+          stopSpinner();
+          process.stdout.clearLine();
+          process.stdout.cursorTo(0);
+          process.stdout.write(' ' + green(success) + ' downloaded related repos\n');
+        }
         cb(null, arr.join('\n'));
       });
     });
   }
   return related;
+}
+
+function spinner() {
+  var arr = ['|', '/', '-', '\\', '-'];
+  var len = arr.length, i = 0;
+  spinner.timer = setInterval(function () {
+    process.stdout.clearLine();
+    process.stdout.cursorTo(1);
+    process.stdout.write(' \u001b[0G' + arr[i++ % len] + ' ');
+  }, 200);
+}
+
+function stopSpinner() {
+  process.stdout.write('\u001b[2K');
+  clearInterval(spinner.timer);
 }
 
 function toLink(config, options) {
