@@ -1,7 +1,7 @@
 {
   "name": "helper-related",
   "description": "Template helper for generating a list of links to the homepages of related GitHub/npm projects.",
-  "version": "0.11.2",
+  "version": "0.12.0",
   "homepage": "https://github.com/helpers/helper-related",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "helpers/helper-related",
@@ -21,13 +21,15 @@
     "test": "mocha"
   },
   "dependencies": {
+    "ansi-green": "^0.1.1",
     "arr-filter": "^1.1.1",
     "async-array-reduce": "^0.1.0",
     "extend-shallow": "^2.0.1",
     "get-pkgs": "^0.3.0",
     "get-value": "^2.0.0",
     "is-valid-glob": "^0.3.0",
-    "lazy-cache": "^0.2.4"
+    "lazy-cache": "^0.2.4",
+    "success-symbol": "^0.1.0"
   },
   "devDependencies": {
     "assemble-core": "^0.3.0",
