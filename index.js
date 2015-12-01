@@ -53,8 +53,7 @@ function relatedHelper(options) {
     }
 
     if (opts.verbose) {
-      spinner();
-      process.stdout.write(' downloading related repos');
+      spinner('creating related links from npm data');
     }
 
     utils.getPkgs(repos, function (err, pkgs) {
@@ -71,10 +70,7 @@ function relatedHelper(options) {
         if (err) return cb(err);
 
         if (opts.verbose) {
-          stopSpinner();
-          process.stdout.clearLine();
-          process.stdout.cursorTo(0);
-          process.stdout.write(' ' + green(success) + ' downloaded related repos\n');
+          stopSpinner(green(success) + ' created list of related links from npm data\n');
         }
         cb(null, arr.join('\n'));
       });
@@ -83,18 +79,20 @@ function relatedHelper(options) {
   return related;
 }
 
-function spinner() {
+function spinner(msg) {
   var arr = ['|', '/', '-', '\\', '-'];
   var len = arr.length, i = 0;
   spinner.timer = setInterval(function () {
     process.stdout.clearLine();
     process.stdout.cursorTo(1);
-    process.stdout.write(' \u001b[0G' + arr[i++ % len] + ' ');
+    process.stdout.write('\u001b[0G ' + arr[i++ % len] + ' ' + msg);
   }, 200);
 }
 
-function stopSpinner() {
-  process.stdout.write('\u001b[2K');
+function stopSpinner(msg) {
+  process.stdout.clearLine();
+  process.stdout.cursorTo(1);
+  process.stdout.write('\u001b[2K' + msg);
   clearInterval(spinner.timer);
 }
 
