@@ -34,8 +34,15 @@ describe('related helper', function() {
   it('should not fail when no names are passed', function(cb) {
     this.timeout(2000);
     related(function(err, res) {
-      res.should.match(/\[micromatch\]/);
-      res.should.match(/\[assemble\]/);
+      assert.equal(res, '');
+      cb();
+    });
+  });
+
+  it('should skip repos that don\'t exist', function(cb) {
+    this.timeout(2000);
+    related(['sosososos', 'assemble'], function(err, res) {
+      assert.equal(res, '[assemble](https://www.npmjs.com/package/assemble): Assemble is a powerful, extendable and easy to use static site generator for node.js. Used… [more](https://www.npmjs.com/package/assemble) | [homepage](https://github.com/assemble/assemble)');
       cb();
     });
   });

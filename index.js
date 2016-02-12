@@ -2,32 +2,32 @@
 
 var utils = require('./utils');
 
-function relatedHelper(options) {
-  options = options || {};
-  var configProp = options.configProp || 'metadata';
+function relatedHelper(config) {
+  config = config || {};
+  var configProp = config.configProp || 'metadata';
 
-  if (utils.isValidGlob(options)) {
+  if (utils.isValidGlob(config)) {
     related.apply(null, arguments);
     return;
   }
 
-  function related(repos, opts, cb) {
-    var args = [].slice.call(arguments);
-    var last = utils.last(args);
+  function related(repos, options, cb) {
+    if (typeof repos === 'function') {
+      cb = repos;
+      repos = null;
+      options = {};
+    }
 
-    if (typeof last === 'function') {
-      cb = args.pop();
+    if (typeof options === 'function') {
+      cb = options;
+      options = {};
     }
 
     if (typeof cb !== 'function') {
       throw new Error('expected a callback function');
     }
 
-    if (args.length > 1) {
-      opts = args.pop();
-    }
-
-    opts = utils.extend({}, options, opts);
+    var opts = utils.extend({}, config, options);
 
     // allow a prop-string to be passed: eg: `related("a.b.c")`,
     // so that `get()` can resolve the value from the context
@@ -37,7 +37,9 @@ function relatedHelper(options) {
         var ctx = utils.extend({}, this.app.cache.data, this.context);
         var res = utils.get(ctx, [configProp, repos].join('.'));
         if (res) repos = res;
-      } catch (err) {}
+      } catch (err) {
+
+      }
     }
 
     if (!repos) {
@@ -66,17 +68,28 @@ function relatedHelper(options) {
     }
 
     utils.getPkgs(repos, function(err, pkgs) {
-      if (err) return cb(err);
+      if (err) {
+        if (err.message !== 'document not found') {
+          cb(err);
+          return;
+        }
+        pkgs = [];
+      }
 
       pkgs = pkgs.sort(function(a, b) {
         return a.name.localeCompare(b.name);
       });
 
+      pkgs = pkgs.filter(Boolean);
+
       utils.reduce(pkgs, [], function(acc, pkg, next) {
         var bullet = link(pkg, pkgs.length, words);
         next(null, acc.concat(bullet));
       }, function(err, arr) {
-        if (err) return cb(err);
+        if (err) {
+          cb(err);
+          return;
+        }
 
         if (opts.verbose) {
           stopSpinner(utils.green(utils.success) + ' created list of related links from npm data\n');
