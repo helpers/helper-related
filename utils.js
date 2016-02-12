@@ -8,12 +8,14 @@ var utils = require('lazy-cache')(require);
 var fn = require;
 
 require = utils;
-require('is-valid-glob', 'isValidGlob');
+require('ansi-green', 'green');
+require('arr-filter', 'filter');
 require('async-array-reduce', 'reduce');
 require('extend-shallow', 'extend');
-require('arr-filter', 'filter');
 require('get-pkgs', 'getPkgs');
 require('get-value', 'get');
+require('is-valid-glob', 'isValidGlob');
+require('success-symbol', 'success');
 require = fn;
 
 utils.arrayify = function(val) {

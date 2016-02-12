@@ -1,7 +1,5 @@
 'use strict';
 
-var success = require('success-symbol');
-var green = require('ansi-green');
 var utils = require('./utils');
 
 function relatedHelper(options) {
@@ -21,6 +19,10 @@ function relatedHelper(options) {
       cb = args.pop();
     }
 
+    if (typeof cb !== 'function') {
+      throw new Error('expected a callback function');
+    }
+
     if (args.length > 1) {
       opts = args.pop();
     }
@@ -32,13 +34,20 @@ function relatedHelper(options) {
     if (this && this.context && typeof repos === 'string') {
       opts = utils.extend({}, this.options, opts);
       try {
-        var res = utils.get(this.context, [configProp, repos].join('.'));
+        var ctx = utils.extend({}, this.app.cache.data, this.context);
+        var res = utils.get(ctx, [configProp, repos].join('.'));
         if (res) repos = res;
       } catch (err) {}
     }
 
+    if (!repos) {
+      cb(null, '');
+      return;
+    }
+
     if (typeof repos !== 'string' && !Array.isArray(repos)) {
-      throw new TypeError('helper-related expects a string or array.');
+      cb(new TypeError('helper-related expects a string or array.'));
+      return;
     }
 
     var words = opts.words || opts.truncate;
@@ -70,7 +79,7 @@ function relatedHelper(options) {
         if (err) return cb(err);
 
         if (opts.verbose) {
-          stopSpinner(green(success) + ' created list of related links from npm data\n');
+          stopSpinner(utils.green(utils.success) + ' created list of related links from npm data\n');
         }
         cb(null, arr.join('\n'));
       });
