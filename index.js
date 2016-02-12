@@ -56,7 +56,7 @@ function relatedHelper(options) {
       : linkify;
 
     if (typeof opts.remove !== 'undefined') {
-      repos = utils.filter(repos, function (name) {
+      repos = utils.filter(repos, function(name) {
         return utils.arrayify(opts.remove).indexOf(name) === -1;
       });
     }
@@ -65,17 +65,17 @@ function relatedHelper(options) {
       spinner('creating related links from npm data');
     }
 
-    utils.getPkgs(repos, function (err, pkgs) {
+    utils.getPkgs(repos, function(err, pkgs) {
       if (err) return cb(err);
 
-      pkgs = pkgs.sort(function (a, b) {
+      pkgs = pkgs.sort(function(a, b) {
         return a.name.localeCompare(b.name);
       });
 
-      utils.reduce(pkgs, [], function (acc, pkg, next) {
+      utils.reduce(pkgs, [], function(acc, pkg, next) {
         var bullet = link(pkg, pkgs.length, words);
         next(null, acc.concat(bullet));
-      }, function (err, arr) {
+      }, function(err, arr) {
         if (err) return cb(err);
 
         if (opts.verbose) {
@@ -91,7 +91,7 @@ function relatedHelper(options) {
 function spinner(msg) {
   var arr = ['|', '/', '-', '\\', '-'];
   var len = arr.length, i = 0;
-  spinner.timer = setInterval(function () {
+  spinner.timer = setInterval(function() {
     process.stdout.clearLine();
     process.stdout.cursorTo(1);
     process.stdout.write('\u001b[0G ' + arr[i++ % len] + ' ' + msg);
