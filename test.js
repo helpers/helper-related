@@ -95,8 +95,9 @@ describe('related helper', function() {
 
   it('should truncate description to 15 when truncate:true', function(cb) {
     this.timeout(2000);
-    related(['snapdragon', 'verb'], {truncate: true}, function(err, res) {
+    related(['snapdragon', 'verb', 'error-format'], {truncate: true}, function(err, res) {
       res.should.equal([
+        '* [error-format](https://www.npmjs.com/package/error-format): Allows you to customize the toString method of passed `err`. Also adds useful properties like… [more](https://www.npmjs.com/package/error-format) | [homepage](https://github.com/tunnckocore/error-format)',
         '* [snapdragon](https://www.npmjs.com/package/snapdragon): snapdragon is an extremely pluggable, powerful and easy-to-use parser-renderer factory. | [homepage](https://github.com/jonschlinkert/snapdragon)',
         '* [verb](https://www.npmjs.com/package/verb): Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used… [more](https://www.npmjs.com/package/verb) | [homepage](https://github.com/verbose/verb)',
       ].join('\n'));

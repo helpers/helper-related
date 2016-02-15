@@ -129,7 +129,7 @@ function toLink(config, options) {
   res += link(name, repo);
   res += truncate(config.description, repo, options.wordLimit);
   res += ' | ';
-  res += link('homepage', config.homepage);
+  res += link('homepage', config.homepage.replace(/#readme$/, ''));
 
   if (count <= 1) return res;
   return '* ' + res;
