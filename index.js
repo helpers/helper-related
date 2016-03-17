@@ -28,6 +28,9 @@ function relatedHelper(config) {
     }
 
     var opts = utils.extend({}, config, options);
+    if (typeof opts.verbose === 'undefined') {
+      opts.verbose = true;
+    }
 
     // allow a prop-string to be passed: eg: `related("a.b.c")`,
     // so that `get()` can resolve the value from the context
@@ -38,7 +41,7 @@ function relatedHelper(config) {
         var res = utils.get(ctx, [configProp, repos].join('.'));
         if (res) repos = res;
       } catch (err) {
-
+        // fall through
       }
     }
 
@@ -94,6 +97,7 @@ function relatedHelper(config) {
         if (opts.verbose) {
           stopSpinner(utils.green(utils.success) + ' created list of related links from npm data\n');
         }
+
         cb(null, arr.join('\n'));
       });
     });

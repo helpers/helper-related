@@ -11,7 +11,7 @@ describe('related helper', function() {
   this.slow(500);
 
   beforeEach(function() {
-    related = helper();
+    related = helper({verbose: false});
   });
 
   it('should get a package.json from npm:', function(cb) {
@@ -126,7 +126,7 @@ describe('helper', function() {
   this.slow(500);
 
   beforeEach(function() {
-    app = assemble();
+    app = assemble({verbose: false});
     app.engine('hbs', require('engine-handlebars'));
     app.engine('md', require('engine-base'));
 
