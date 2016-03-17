@@ -35,6 +35,7 @@
     "assemble-core": "^0.12.0",
     "engine-base": "^0.1.2",
     "engine-handlebars": "^0.8.0",
+    "gulp-format-md": "^0.1.7",
     "mocha": "*",
     "should": "*"
   },
@@ -53,6 +54,15 @@
     "template"
   ],
   "verb": {
+    "run": true,
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
     "related": {
       "list": [
         "assemble",
@@ -65,7 +75,11 @@
       ]
     },
     "reflinks": [
-      "assemble"
-    ]
+      "assemble",
+      "verb"
+    ],
+    "lint": {
+      "reflinks": true
+    }
   }
 }
