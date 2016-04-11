@@ -25,8 +25,8 @@
     "arr-filter": "^1.1.1",
     "async-array-reduce": "^0.1.0",
     "extend-shallow": "^2.0.1",
-    "get-pkgs": "^0.4.0",
-    "get-value": "^2.0.3",
+    "get-pkgs": "^0.5.0",
+    "get-value": "^2.0.5",
     "is-valid-glob": "^0.3.0",
     "lazy-cache": "^1.0.3",
     "success-symbol": "^0.1.0"
