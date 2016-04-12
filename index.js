@@ -5,10 +5,16 @@ var utils = require('./utils');
 function relatedHelper(config) {
   config = config || {};
   var configProp = config.configProp || 'metadata';
+  var dateStore = new utils.DateStore('helper-related');
+  var store = new utils.Store('helper-related');
 
   if (utils.isValidGlob(config)) {
     related.apply(null, arguments);
     return;
+  }
+
+  function recentlySaved(name) {
+    return store.has(name) && dateStore.lastSaved(name).lessThan('1 day ago');
   }
 
   function related(repos, options, cb) {
@@ -60,17 +66,39 @@ function relatedHelper(config) {
       ? opts.linkify
       : linkify;
 
-    if (typeof opts.remove !== 'undefined') {
-      repos = utils.filter(repos, function(name) {
-        return utils.arrayify(opts.remove).indexOf(name) === -1;
-      });
+    // get links cached in the past 24 hours
+    opts.remove = utils.arrayify(opts.remove);
+    repos = utils.arrayify(repos);
+
+    var cached = [];
+    var arr = [];
+    var len = repos.length;
+    var idx = -1;
+
+    while (++idx < len) {
+      var name = repos[idx];
+      if (~opts.remove.indexOf(name)) {
+        continue;
+      }
+      var key = name + words;
+      if (recentlySaved(key)) {
+        var cachedLink = store.get(key);
+        if (cachedLink) {
+          cached.push(cachedLink);
+          continue;
+        }
+      }
+      arr.push(name);
     }
 
     if (opts.verbose) {
       spinner('creating related links from npm data');
     }
 
-    utils.getPkgs(repos, function(err, pkgs) {
+    cached.sort();
+    arr.sort();
+
+    utils.getPkgs(arr, function(err, pkgs) {
       if (err) {
         if (err.message !== 'document not found') {
           cb(err);
@@ -87,6 +115,12 @@ function relatedHelper(config) {
 
       utils.reduce(pkgs, [], function(acc, pkg, next) {
         var bullet = link(pkg, pkgs.length, words);
+
+        // store the date for `pkg.name`
+        var prop = pkg.name + words;
+        dateStore.set(prop);
+        store.set(prop, bullet);
+
         next(null, acc.concat(bullet));
       }, function(err, arr) {
         if (err) {
@@ -98,6 +132,7 @@ function relatedHelper(config) {
           stopSpinner(utils.green(utils.success) + ' created list of related links from npm data\n');
         }
 
+        arr = arr.concat(cached);
         cb(null, arr.join('\n'));
       });
     });
