@@ -23,8 +23,7 @@ app.helper('related', require('helper-related'));
 **Use in templates**
 
 ```js
-* [micromatch](https://www.npmjs.com/package/micromatch): Glob matching for javascript/node.js. A drop-in replacement and faster alternative to minimatch and multimatch. Just… [more](https://www.npmjs.com/package/micromatch) | [homepage](https://github.com/jonschlinkert/micromatch)
-* [remarkable](https://www.npmjs.com/package/remarkable): Markdown parser, done right. 100% Commonmark support, extensions, syntax plugins, high speed - all in… [more](https://www.npmjs.com/package/remarkable) | [homepage](https://github.com/jonschlinkert/remarkable)
+{%= related(['remarkable', 'micromatch']) %}
 ```
 
 Results in a list that looks something like:
@@ -34,22 +33,23 @@ Results in a list that looks something like:
 * [remarkable](https://www.npmjs.com/package/remarkable): Markdown parser, done right. 100% Commonmark support, extensions, syntax plugins, high speed - all in… [more](https://www.npmjs.com/package/remarkable) | [homepage](https://github.com/jonschlinkert/remarkable)
 ```
 
-If the array gets long, you can format it like this if you want:
+If the array gets long, you can either format it like this:
 
 ```js
-* [assemble](https://www.npmjs.com/package/assemble): Assemble is a powerful, extendable and easy to use static site generator for node.js. Used… [more](https://www.npmjs.com/package/assemble) | [homepage](https://github.com/assemble/assemble)
-* [git-branch](https://www.npmjs.com/package/git-branch): Get the current branch for a local git repository. | [homepage](https://github.com/jonschlinkert/git-branch)
-* [git-repo-name](https://www.npmjs.com/package/git-repo-name): Get the repository name from the git remote origin URL. | [homepage](https://github.com/jonschlinkert/git-repo-name)
-* [git-user-email](https://www.npmjs.com/package/git-user-email): Get the email address of the current user from git config. | [homepage](https://github.com/jonschlinkert/git-user-email)
-* [git-user-name](https://www.npmjs.com/package/git-user-name): Get a user's name from git config at the project or global scope, depending on… [more](https://www.npmjs.com/package/git-user-name) | [homepage](https://github.com/jonschlinkert/git-user-name)
-* [git-username](https://www.npmjs.com/package/git-username): Get the username from a git remote origin URL. | [homepage](https://github.com/jonschlinkert/git-username)
-* [github-repo-url](https://www.npmjs.com/package/github-repo-url): Extract a GitHub project's URL from its git repository URL. | [homepage](https://github.com/jonschlinkert/github-repo-url)
-* [handlebars-helpers](https://www.npmjs.com/package/handlebars-helpers): 120+ Handlebars helpers in ~20 categories, for Assemble, YUI, Ghost or any Handlebars project. Includes… [more](https://www.npmjs.com/package/handlebars-helpers) | [homepage](https://github.com/assemble/handlebars-helpers)
-* [helper-reflinks](https://www.npmjs.com/package/helper-reflinks): Template helper for generating a list of markdown formatted reference links to github repos for… [more](https://www.npmjs.com/package/helper-reflinks) | [homepage](https://github.com/helpers/helper-reflinks)
-* [micromatch](https://www.npmjs.com/package/micromatch): Glob matching for javascript/node.js. A drop-in replacement and faster alternative to minimatch and multimatch. Just… [more](https://www.npmjs.com/package/micromatch) | [homepage](https://github.com/jonschlinkert/micromatch)
-* [remarkable](https://www.npmjs.com/package/remarkable): Markdown parser, done right. 100% Commonmark support, extensions, syntax plugins, high speed - all in… [more](https://www.npmjs.com/package/remarkable) | [homepage](https://github.com/jonschlinkert/remarkable)
-* [template-helpers](https://www.npmjs.com/package/template-helpers): Generic JavaScript helpers that can be used with any template engine. Handlebars, Lo-Dash, Underscore, or… [more](https://www.npmjs.com/package/template-helpers) | [homepage](https://github.com/jonschlinkert/template-helpers)
-* [verb](https://www.npmjs.com/package/verb): Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used… [more](https://www.npmjs.com/package/verb) | [homepage](https://github.com/verbose/verb)   
+{%= related([
+  'git-branch', 
+  'git-repo-name', 
+  'git-user-email', 
+  'git-user-name', 
+  'git-username', 
+  'github-repo-url'
+]) %}   
+```
+
+Or pass the list as a variable on the context:
+
+```js
+{%= related(verb.related.list) %}   
 ```
 
 ## Related projects
@@ -57,12 +57,6 @@ If the array gets long, you can format it like this if you want:
 You might also be interested in these projects:
 
 * [assemble](https://www.npmjs.com/package/assemble): Assemble is a powerful, extendable and easy to use static site generator for node.js. Used… [more](https://www.npmjs.com/package/assemble) | [homepage](https://github.com/assemble/assemble)
-* [git-branch](https://www.npmjs.com/package/git-branch): Get the current branch for a local git repository. | [homepage](https://github.com/jonschlinkert/git-branch)
-* [git-repo-name](https://www.npmjs.com/package/git-repo-name): Get the repository name from the git remote origin URL. | [homepage](https://github.com/jonschlinkert/git-repo-name)
-* [git-user-email](https://www.npmjs.com/package/git-user-email): Get the email address of the current user from git config. | [homepage](https://github.com/jonschlinkert/git-user-email)
-* [git-user-name](https://www.npmjs.com/package/git-user-name): Get a user's name from git config at the project or global scope, depending on… [more](https://www.npmjs.com/package/git-user-name) | [homepage](https://github.com/jonschlinkert/git-user-name)
-* [git-username](https://www.npmjs.com/package/git-username): Get the username from a git remote origin URL. | [homepage](https://github.com/jonschlinkert/git-username)
-* [github-repo-url](https://www.npmjs.com/package/github-repo-url): Extract a GitHub project's URL from its git repository URL. | [homepage](https://github.com/jonschlinkert/github-repo-url)
 * [handlebars-helpers](https://www.npmjs.com/package/handlebars-helpers): 120+ Handlebars helpers in ~20 categories, for Assemble, YUI, Ghost or any Handlebars project. Includes… [more](https://www.npmjs.com/package/handlebars-helpers) | [homepage](https://github.com/assemble/handlebars-helpers)
 * [helper-reflinks](https://www.npmjs.com/package/helper-reflinks): Template helper for generating a list of markdown formatted reference links to github repos for… [more](https://www.npmjs.com/package/helper-reflinks) | [homepage](https://github.com/helpers/helper-reflinks)
 * [micromatch](https://www.npmjs.com/package/micromatch): Glob matching for javascript/node.js. A drop-in replacement and faster alternative to minimatch and multimatch. Just… [more](https://www.npmjs.com/package/micromatch) | [homepage](https://github.com/jonschlinkert/micromatch)
