@@ -9,6 +9,7 @@ var fn = require;
 
 require = utils;
 require('ansi-green', 'green');
+require('ansi-magenta', 'magenta');
 require('arr-filter', 'filter');
 require('async-array-reduce', 'reduce');
 require('data-store', 'Store');
@@ -18,6 +19,7 @@ require('get-pkgs', 'getPkgs');
 require('get-value', 'get');
 require('is-valid-glob', 'isValidGlob');
 require('success-symbol', 'success');
+require('time-diff', 'Time');
 require = fn;
 
 utils.arrayify = function(val) {

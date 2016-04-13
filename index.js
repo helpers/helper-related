@@ -7,17 +7,16 @@ function relatedHelper(config) {
   var configProp = config.configProp || 'metadata';
   var dateStore = new utils.DateStore('helper-related');
   var store = new utils.Store('helper-related');
+  var time = new utils.Time();
 
   if (utils.isValidGlob(config)) {
     related.apply(null, arguments);
     return;
   }
 
-  function recentlySaved(name) {
-    return store.has(name) && dateStore.lastSaved(name).lessThan('1 day ago');
-  }
-
   function related(repos, options, cb) {
+    time.start('helper');
+
     if (typeof repos === 'function') {
       cb = repos;
       repos = null;
@@ -36,6 +35,19 @@ function relatedHelper(config) {
     var opts = utils.extend({}, config, options);
     if (typeof opts.verbose === 'undefined') {
       opts.verbose = true;
+    }
+
+    function recentlySaved(name) {
+      if (opts.store === false) {
+        return false;
+      }
+      if (opts.storeLimit === false) {
+        opts.storeLimit = '1 year ago';
+      }
+      if (typeof opts.storeLimit === 'undefined') {
+        opts.storeLimit = '5 days ago';
+      }
+      return store.has(name) && dateStore.lastSaved(name).lessThan(opts.storeLimit);
     }
 
     // allow a prop-string to be passed: eg: `related("a.b.c")`,
@@ -83,7 +95,11 @@ function relatedHelper(config) {
       var key = name + words;
       if (recentlySaved(key)) {
         var cachedLink = store.get(key);
+
         if (cachedLink) {
+          if (cachedLink.charAt(0) !== '*') {
+            cachedLink = '* ' + cachedLink;
+          }
           cached.push(cachedLink);
           continue;
         }
@@ -95,8 +111,8 @@ function relatedHelper(config) {
       spinner('creating related links from npm data');
     }
 
-    cached.sort();
-    arr.sort();
+    sort(cached);
+    sort(arr);
 
     utils.getPkgs(arr, function(err, pkgs) {
       if (err) {
@@ -107,10 +123,7 @@ function relatedHelper(config) {
         pkgs = [];
       }
 
-      pkgs = pkgs.sort(function(a, b) {
-        return a.name.localeCompare(b.name);
-      });
-
+      sort(pkgs, 'name');
       pkgs = pkgs.filter(Boolean);
 
       utils.reduce(pkgs, [], function(acc, pkg, next) {
@@ -129,10 +142,17 @@ function relatedHelper(config) {
         }
 
         if (opts.verbose) {
-          stopSpinner(utils.green(utils.success) + ' created list of related links from npm data\n');
+          stopSpinner(utils.green(utils.success) + ' created list of related links from npm data ' + utils.magenta(time.end('helper')) + '\n');
         }
 
         arr = arr.concat(cached);
+
+        // since results are stored, when a single item is returned
+        // it might have a bullet, so we'll strip it just in case.
+        if (arr.length === 1) {
+          arr[0] = arr[0].replace(/^[-+* ]+/, '');
+        }
+
         cb(null, arr.join('\n'));
       });
     });
@@ -172,6 +192,15 @@ function toLink(config, options) {
 
   if (count <= 1) return res;
   return '* ' + res;
+}
+
+function sort(arr, prop) {
+  arr.sort(function(a, b) {
+    if (prop) {
+      return a[prop].localeCompare(b[prop]);
+    }
+    return a.localeCompare(b);
+  });
 }
 
 function linkify(pkg, num, words) {
