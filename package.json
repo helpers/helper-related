@@ -21,27 +21,20 @@
     "test": "mocha"
   },
   "dependencies": {
-    "ansi-green": "^0.1.1",
-    "ansi-magenta": "^0.1.1",
-    "arr-filter": "^1.1.1",
-    "async-array-reduce": "^0.1.0",
-    "data-store": "^0.15.5",
-    "date-store": "^0.1.1",
+    "arr-union": "^3.1.0",
+    "engine": "^0.1.11",
     "extend-shallow": "^2.0.1",
-    "get-pkgs": "^0.5.0",
-    "get-value": "^2.0.5",
-    "is-valid-glob": "^0.3.0",
-    "lazy-cache": "^1.0.3",
-    "success-symbol": "^0.1.0",
-    "time-diff": "^0.1.0"
+    "lazy-cache": "^2.0.1",
+    "markdown-utils": "^0.7.3",
+    "reflinks": "^0.2.7"
   },
   "devDependencies": {
-    "assemble-core": "^0.16.1",
     "engine-base": "^0.1.2",
     "engine-handlebars": "^0.8.0",
     "gulp-format-md": "^0.1.7",
     "mocha": "^2.4.5",
-    "should": "^8.3.0"
+    "should": "^8.3.0",
+    "templates": "^0.21.0"
   },
   "keywords": [
     "async",
