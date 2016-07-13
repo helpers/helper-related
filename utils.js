@@ -29,31 +29,6 @@ utils.render = function(str, context, options) {
   return engine.render(str, ctx);
 };
 
-/**
- * Convert `[foo](bar)` to something like `- [foo](bar): visit the homepage!`
- *
- * @param {String} `link`
- * @param {Object} `options`
- * @param {Object} `ctx`
- * @return {String}
- * @api public
- */
-
-function toBullet(pkg, options) {
-  var opts = utils.extend({}, options);
-  if (typeof opts.toBullet === 'function') {
-    return opts.toBullet(pkg, opts);
-  }
-  var opts = utils.extend({href: pkg.homepage}, opts);
-  var url = `https://www.npmjs.com/package/${pkg.name}`;
-
-  var bullet = '';
-  bullet += npmLink(pkg.name, pkg, opts) + ': ';
-  bullet += utils.truncate(pkg.description, opts) + ' | ';
-  bullet += githubLink('homepage', pkg, opts);
-  return utils.mdu.li(bullet, 0);
-}
-
 function githubLink(name, pkg, options) {
   var opts = utils.extend({}, options);
   if (typeof opts.githubLink === 'function') {

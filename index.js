@@ -44,12 +44,12 @@ function relatedList(config) {
       return;
     }
 
-    utils.reflinks(names, opts, function(err, links) {
+    utils.reflinks(names, opts, function(err, res) {
       if (err) {
         cb(err);
         return;
       }
-      cb(null, toList(links, opts, ctx, names.length));
+      cb(null, toList(res.links, opts, ctx, names.length));
     });
   };
 };

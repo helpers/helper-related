@@ -11,6 +11,8 @@
   "license": "MIT",
   "files": [
     "index.js",
+    "LICENSE",
+    "README.md",
     "utils.js"
   ],
   "main": "index.js",
@@ -26,29 +28,32 @@
     "extend-shallow": "^2.0.1",
     "lazy-cache": "^2.0.1",
     "markdown-utils": "^0.7.3",
-    "reflinks": "^0.2.7"
+    "reflinks": "^0.3.1"
   },
   "devDependencies": {
     "engine-base": "^0.1.2",
     "engine-handlebars": "^0.8.0",
-    "gulp-format-md": "^0.1.7",
-    "mocha": "^2.4.5",
-    "should": "^8.3.0",
-    "templates": "^0.21.0"
+    "gulp-format-md": "^0.1.9",
+    "mocha": "^2.5.3",
+    "should": "^9.0.2",
+    "templates": "^0.24.2"
   },
   "keywords": [
     "async",
     "github",
     "helper",
+    "helpers",
     "homepage",
     "links",
     "list",
     "npm",
     "related",
+    "render",
     "repo",
     "repos",
     "resolve",
-    "template"
+    "template",
+    "templates"
   ],
   "verb": {
     "run": true,
@@ -65,15 +70,16 @@
         "assemble",
         "handlebars-helpers",
         "helper-reflinks",
-        "template-helpers",
-        "verb",
+        "micromatch",
         "remarkable",
-        "micromatch"
+        "template-helpers",
+        "verb"
       ]
     },
     "reflinks": [
       "assemble",
-      "verb"
+      "verb",
+      "verb-readme-generator"
     ],
     "lint": {
       "reflinks": true
