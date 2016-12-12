@@ -5,7 +5,7 @@ var defaults = {
   spinnerStart: 'creating related links from npm data',
   spinnerStop: 'created related links from npm data',
   template: function(pkg, options) {
-    var opts = utils.extend({}, options);
+    var opts = utils.extend({description: ''}, options);
     var defaultTemplate = `- [<%= name %>](https://www.npmjs.com/package/<%= name %>): <%= truncate(description, 15) %> | <%= link_github(name, obj) %>`;
     var str = opts.template || defaultTemplate;
     return utils.render(str, pkg, opts);
