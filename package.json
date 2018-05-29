@@ -28,7 +28,7 @@
     "extend-shallow": "^2.0.1",
     "lazy-cache": "^2.0.2",
     "markdown-utils": "^0.7.3",
-    "reflinks": "^0.3.4"
+    "reflinks": "^0.3.6"
   },
   "devDependencies": {
     "engine-base": "^0.1.2",
