@@ -2,9 +2,9 @@
 
 require('mocha');
 require('should');
-var assert = require('assert');
-var templates = require('templates');
-var helper = require('..');
+const assert = require('assert');
+const templates = require('templates');
+const helper = require('..');
 var related, app;
 
 describe('related helper', function() {
@@ -75,7 +75,7 @@ describe('related helper', function() {
     this.timeout(2000);
     related(['snapdragon', 'verb'], function(err, res) {
       assert.equal(res, [
-        '- [snapdragon](https://www.npmjs.com/package/snapdragon): snapdragon is an extremely pluggable, powerful and easy-to-use parser-renderer factory. | [homepage](https://github.com/jonschlinkert/snapdragon "snapdragon is an extremely pluggable, powerful and easy-to-use parser-renderer factory.")',
+        '- [snapdragon](https://www.npmjs.com/package/snapdragon): Easy-to-use plugin system for creating powerful, fast and versatile parsers and compilers, with built-in source-map… [more](https://github.com/here-be/snapdragon) | [homepage](https://github.com/here-be/snapdragon "Easy-to-use plugin system for creating powerful, fast and versatile parsers and compilers, with built-in source-map support.")',
         '- [verb](https://www.npmjs.com/package/verb): Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used… [more](https://github.com/verbose/verb) | [homepage](https://github.com/verbose/verb "Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used on hundreds of projects of all sizes to generate everything from API docs to readmes.")',
       ].join('\n'));
       cb();
@@ -97,7 +97,7 @@ describe('related helper', function() {
     this.timeout(2000);
     related(['snapdragon', 'verb'], function(err, res) {
       assert.deepEqual(res, [
-        '- [snapdragon](https://www.npmjs.com/package/snapdragon): snapdragon is an extremely pluggable, powerful and easy-to-use parser-renderer factory. | [homepage](https://github.com/jonschlinkert/snapdragon "snapdragon is an extremely pluggable, powerful and easy-to-use parser-renderer factory.")',
+        '- [snapdragon](https://www.npmjs.com/package/snapdragon): Easy-to-use plugin system for creating powerful, fast and versatile parsers and compilers, with built-in source-map… [more](https://github.com/here-be/snapdragon) | [homepage](https://github.com/here-be/snapdragon "Easy-to-use plugin system for creating powerful, fast and versatile parsers and compilers, with built-in source-map support.")',
         '- [verb](https://www.npmjs.com/package/verb): Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used… [more](https://github.com/verbose/verb) | [homepage](https://github.com/verbose/verb "Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used on hundreds of projects of all sizes to generate everything from API docs to readmes.")',
       ].join('\n'));
       cb();
