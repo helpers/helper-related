@@ -1,116 +1,110 @@
 'use strict';
 
-var utils = require('lazy-cache')(require);
-var fn = require;
+define(exports, 'engine', () => require('engine'));
+define(exports, 'mdu', () => require('markdown-utils'));
+define(exports, 'reflinks', () => require('reflinks'));
+define(exports, 'union', () => require('arr-union'));
 
-require = utils;
-require('arr-union', 'union');
-require('extend-shallow', 'extend');
-require('markdown-utils', 'mdu');
-require('engine');
-require('reflinks');
-require = fn;
+function define(obj, key, fn) {
+  Reflect.defineProperty(obj, key, { get: fn });
+}
 
-/**
- * Utils
- */
-
-utils.render = function(str, context, options) {
-  var ctx = utils.extend({}, options, context);
-  var engine = utils.engine();
+exports.render = function(str, context, options) {
+  const ctx = Object.assign({}, options, context);
+  const engine = exports.engine();
 
   if (typeof ctx.truncate !== 'function') {
-    ctx.truncate = utils.truncate;
+    ctx.truncate = exports.truncate;
   }
 
   engine.helper('truncate', ctx.truncate);
   engine.helper('link_github', githubLink);
-  engine.helper('link_npm',  npmLink);
+  engine.helper('link_npm', npmLink);
   return engine.render(str, ctx);
 };
 
 function githubLink(name, pkg, options) {
-  var opts = utils.extend({}, options);
+  const opts = Object.assign({}, options);
   if (typeof opts.githubLink === 'function') {
     return opts.githubLink(name, pkg, opts);
   }
-  var desc = pkg.description;
+  let desc = pkg.description;
   if (typeof opts.description === 'string') {
     desc = opts.description;
   }
   if (opts.description === false) {
     desc = '';
   }
-  return utils.mdu.link('homepage', pkg.homepage, desc);
+  return exports.mdu.link('homepage', pkg.homepage, desc);
 }
 
 function npmLink(name, pkg, options) {
-  var opts = utils.extend({}, options);
-  var url = `https://www.npmjs.com/package/${pkg.name}`;
+  const opts = Object.assign({}, options);
+  const url = `https://www.npmjs.com/package/${pkg.name}`;
   if (typeof opts.githubLink !== 'function') {
-    return utils.mdu.link('npm', url);
+    return exports.mdu.link('npm', url);
   }
-  return utils.mdu.link('npm', url);
+  return exports.mdu.link('npm', url);
 }
 
-utils.arrayify = function(val) {
+exports.arrayify = function(val) {
   return val ? (Array.isArray(val) ? val : [val]) : [];
 };
 
-utils.isString = function(val) {
+exports.isString = function(val) {
   return val && typeof val === 'string';
 };
 
-utils.filter = function(arr, names) {
-  names = utils.arrayify(names);
+exports.filter = function(arr, names) {
+  names = exports.arrayify(names);
   return arr.filter(function(ele) {
     return names.indexOf(ele) === -1;
   });
 };
 
-utils.truncate = function(str, options) {
-  if (!utils.isString(str)) {
+exports.truncate = function(str, options) {
+  if (!exports.isString(str)) {
     return '';
   }
   // ensure helper context is available
-  var ctx = utils.extend({}, this);
-  var opts = utils.extend({}, options, ctx);
+  const ctx = Object.assign({}, this);
+  const opts = Object.assign({}, options, ctx);
   if (opts.words || !opts.chars) {
-    return utils.truncateWords(str, opts);
+    return exports.truncateWords(str, opts);
   }
-  return utils.truncateString(str, opts);
+  return exports.truncateString(str, opts);
 };
 
-utils.truncateWords = function(str, options) {
-  var opts = utils.extend({words: 15}, options);
-  var originalLength = str.length;
-  var words = str.split(' ').slice(0, opts.words);
-  var res = words.join(' ');
+exports.truncateWords = function(str, options) {
+  const opts = Object.assign({words: 15}, options);
+  const originalLength = str.length;
+  const words = str.split(' ').slice(0, opts.words);
+  const res = words.join(' ');
 
   if (res.length < originalLength) {
-    return utils.ellipsis(res.replace(/^\W+|\W+$/g, ''), opts.homepage);
+    return exports.ellipsis(res.replace(/^\W+|\W+$/g, ''), opts.homepage);
   }
   return res;
 };
 
-utils.truncateString = function(str, options) {
-  var opts = utils.extend({chars: 50}, options);
-  var originalLength = str.length;
-  var regex = new RegExp('.{1,' + opts.chars + '}(\\s+|$)|\\S+?(\\s+|$)', 'g');
-  var lines = str.match(regex) || [];
-  var res = lines[0];
+exports.truncateString = function(str, options) {
+  const opts = Object.assign({chars: 50}, options);
+  const originalLength = str.length;
+  const regex = new RegExp('.{1,' + opts.chars + '}(\\s+|$)|\\S+?(\\s+|$)', 'g');
+  const lines = str.match(regex) || [];
+  const res = lines[0];
   if (res.length < originalLength) {
-    return utils.ellipsis(res.replace(/^\W+|\W+$/g, ''), opts.homepage);
+    return exports.ellipsis(res.replace(/^\W+|\W+$/g, ''), opts.homepage);
   }
   return res;
 };
 
-utils.ellipsis = function(str, href) {
+exports.ellipsis = function(str, href) {
   return str + (href ? '… [more](' + href + ')' : '…');
 };
 
 /**
- * Expose utils
+ * Expose exports
  */
 
-module.exports = utils;
+module.exports = exports;

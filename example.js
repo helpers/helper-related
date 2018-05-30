@@ -1,8 +1,7 @@
-var related = require('./')();
-var pkg = require('./package');
-
-var deps = Object.keys(pkg.dependencies);
-var opts = {
+const related = require('./')();
+const pkg = require('./package');
+const deps = Object.keys(pkg.dependencies);
+const opts = {
   verbose: true,
   helpers: {
     truncate: function(str) {

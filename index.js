@@ -1,13 +1,13 @@
 'use strict';
 
-var utils = require('./utils');
-var defaults = {
+const utils = require('./utils');
+const defaults = {
   spinnerStart: 'creating related links from npm data',
   spinnerStop: 'created related links from npm data',
   template: function(pkg, options) {
-    var opts = utils.extend({description: ''}, options);
-    var defaultTemplate = `- [<%= name %>](https://www.npmjs.com/package/<%= name %>): <%= truncate(description, 15) %> | <%= link_github(name, obj) %>`;
-    var str = opts.template || defaultTemplate;
+    const opts = Object.assign({description: ''}, options);
+    const defaultTemplate = '- [<%= name %>](https://www.npmjs.com/package/<%= name %>): <%= truncate(description, 15) %> | <%= link_github(name, obj) %>';
+    const str = opts.template || defaultTemplate;
     return utils.render(str, pkg, opts);
   }
 };
@@ -24,12 +24,12 @@ function relatedList(config) {
       options = {};
     }
 
-    var app = this || {};
-    var opts = utils.extend({}, defaults, config, options, app.options);
-    var ctx = utils.extend({}, app.context, opts.context);
+    const app = this || {};
+    const opts = Object.assign({}, defaults, config, options, app.options);
+    const ctx = Object.assign({}, app.context, opts.context);
 
     if (typeof opts.template === 'string') {
-      var tmpl = opts.template;
+      const tmpl = opts.template;
       opts.template = function(pkg, options) {
         return utils.render(tmpl, pkg, options);
       };
@@ -52,10 +52,10 @@ function relatedList(config) {
       cb(null, toList(res.links, opts, ctx, names.length));
     });
   };
-};
+}
 
 function toList(links, options, ctx, len) {
-  var opts = utils.extend({}, options);
+  const opts = Object.assign({}, options);
   if (typeof opts.toList === 'function') {
     return opts.toList(links, opts, ctx);
   }

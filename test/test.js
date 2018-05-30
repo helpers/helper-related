@@ -1,11 +1,10 @@
 'use strict';
 
 require('mocha');
-require('should');
 const assert = require('assert');
 const templates = require('templates');
 const helper = require('..');
-var related, app;
+let related, app;
 
 describe('related helper', function() {
   this.slow(500);
@@ -17,6 +16,7 @@ describe('related helper', function() {
   it('should get a package.json from npm:', function(cb) {
     this.timeout(2000);
     related('micromatch', function(err, res) {
+      if (err) return cb(err);
       assert(/\[micromatch\]/.test(res));
       cb();
     });
@@ -25,6 +25,7 @@ describe('related helper', function() {
   it('should get an array of package.json files:', function(cb) {
     this.timeout(2000);
     related(['micromatch', 'assemble'], function(err, res) {
+      if (err) return cb(err);
       assert(/\[micromatch\]/.test(res));
       assert(/\[assemble\]/.test(res));
       cb();
@@ -34,6 +35,7 @@ describe('related helper', function() {
   it('should not fail when no names are passed', function(cb) {
     this.timeout(2000);
     related(function(err, res) {
+      if (err) return cb(err);
       assert.equal(res, '');
       cb();
     });
@@ -42,6 +44,7 @@ describe('related helper', function() {
   it('should skip repos that don\'t exist', function(cb) {
     this.timeout(2000);
     related(['fooosooo'], function(err, res) {
+      if (err) return cb(err);
       assert.equal(res, '');
       cb();
     });
@@ -51,6 +54,7 @@ describe('related helper', function() {
     this.timeout(2000);
     var list = ['assemble', 'verb', 'remarkable', 'snippet'];
     related(list, {remove: 'remarkable'}, function(err, res) {
+      if (err) return cb(err);
       assert(/\[assemble\]/.test(res));
       assert(!/\[remarkable\]/.test(res));
       assert(/\[verb\]/.test(res));
@@ -63,6 +67,7 @@ describe('related helper', function() {
     this.timeout(2000);
     var list = ['assemble', 'verb', 'remarkable', 'snippet'];
     related(list, {remove: ['remarkable', 'verb']}, function(err, res) {
+      if (err) return cb(err);
       assert(/\[assemble\]/.test(res));
       assert(!/\[remarkable\]/.test(res));
       assert(!/\[verb\]/.test(res));
@@ -74,9 +79,10 @@ describe('related helper', function() {
   it('should truncate description to 15 words by default', function(cb) {
     this.timeout(2000);
     related(['snapdragon', 'verb'], function(err, res) {
+      if (err) return cb(err);
       assert.equal(res, [
         '- [snapdragon](https://www.npmjs.com/package/snapdragon): Easy-to-use plugin system for creating powerful, fast and versatile parsers and compilers, with built-in source-map… [more](https://github.com/here-be/snapdragon) | [homepage](https://github.com/here-be/snapdragon "Easy-to-use plugin system for creating powerful, fast and versatile parsers and compilers, with built-in source-map support.")',
-        '- [verb](https://www.npmjs.com/package/verb): Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used… [more](https://github.com/verbose/verb) | [homepage](https://github.com/verbose/verb "Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used on hundreds of projects of all sizes to generate everything from API docs to readmes.")',
+        '- [verb](https://www.npmjs.com/package/verb): Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used… [more](https://github.com/verbose/verb) | [homepage](https://github.com/verbose/verb "Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used on hundreds of projects of all sizes to generate everything from API docs to readmes.")'
       ].join('\n'));
       cb();
     });
@@ -85,9 +91,10 @@ describe('related helper', function() {
   it('should truncate the description to the given number of words:', function(cb) {
     this.timeout(2000);
     related(['verb', 'snippet'], {words: 10}, function(err, res) {
+      if (err) return cb(err);
       assert.equal(res, [
         '- [snippet](https://www.npmjs.com/package/snippet): CLI and API for easily creating, reusing, sharing and generating… [more](https://github.com/jonschlinkert/snippet) | [homepage](https://github.com/jonschlinkert/snippet "CLI and API for easily creating, reusing, sharing and generating snippets of code from the command line.")',
-        '- [verb](https://www.npmjs.com/package/verb): Documentation generator for GitHub projects. Verb is extremely powerful, easy… [more](https://github.com/verbose/verb) | [homepage](https://github.com/verbose/verb "Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used on hundreds of projects of all sizes to generate everything from API docs to readmes.")',
+        '- [verb](https://www.npmjs.com/package/verb): Documentation generator for GitHub projects. Verb is extremely powerful, easy… [more](https://github.com/verbose/verb) | [homepage](https://github.com/verbose/verb "Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used on hundreds of projects of all sizes to generate everything from API docs to readmes.")'
       ].join('\n'));
       cb();
     });
@@ -96,9 +103,10 @@ describe('related helper', function() {
   it('should truncate description to 15 when truncate:true', function(cb) {
     this.timeout(2000);
     related(['snapdragon', 'verb'], function(err, res) {
+      if (err) return cb(err);
       assert.deepEqual(res, [
         '- [snapdragon](https://www.npmjs.com/package/snapdragon): Easy-to-use plugin system for creating powerful, fast and versatile parsers and compilers, with built-in source-map… [more](https://github.com/here-be/snapdragon) | [homepage](https://github.com/here-be/snapdragon "Easy-to-use plugin system for creating powerful, fast and versatile parsers and compilers, with built-in source-map support.")',
-        '- [verb](https://www.npmjs.com/package/verb): Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used… [more](https://github.com/verbose/verb) | [homepage](https://github.com/verbose/verb "Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used on hundreds of projects of all sizes to generate everything from API docs to readmes.")',
+        '- [verb](https://www.npmjs.com/package/verb): Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used… [more](https://github.com/verbose/verb) | [homepage](https://github.com/verbose/verb "Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used on hundreds of projects of all sizes to generate everything from API docs to readmes.")'
       ].join('\n'));
       cb();
     });
@@ -112,9 +120,10 @@ describe('related helper', function() {
       }
     };
     related(['snapdragon', 'verb'], options, function(err, res) {
+      if (err) return cb(err);
       assert.deepEqual(res, [
         '+ [snapdragon](https://www.npmjs.com/package/snapdragon)',
-        '+ [verb](https://www.npmjs.com/package/verb)',
+        '+ [verb](https://www.npmjs.com/package/verb)'
       ].join('\n'));
       cb();
     });
@@ -126,9 +135,10 @@ describe('related helper', function() {
       template: '++ [<%= name %>](https://www.npmjs.com/package/<%= name %>)'
     };
     related(['snapdragon', 'verb'], options, function(err, res) {
+      if (err) return cb(err);
       assert.deepEqual(res, [
         '++ [snapdragon](https://www.npmjs.com/package/snapdragon)',
-        '++ [verb](https://www.npmjs.com/package/verb)',
+        '++ [verb](https://www.npmjs.com/package/verb)'
       ].join('\n'));
       cb();
     });
@@ -137,9 +147,10 @@ describe('related helper', function() {
   it('should not truncate description when `options.words` is Infinity', function(cb) {
     this.timeout(2000);
     related(['micromatch', 'assemble'], {words: Infinity}, function(err, res) {
+      if (err) return cb(err);
       assert(res.length > 100);
-      assert(/\- \[assemble\]/.test(res));
-      assert(/\- \[micromatch\]/.test(res));
+      assert(/- \[assemble\]/.test(res));
+      assert(/- \[micromatch\]/.test(res));
       cb();
     });
   });
@@ -172,7 +183,7 @@ describe('helper', function() {
     app.page('abc', {content: 'foo {{related list}} bar'})
       .render({list: ['micromatch']}, function(err, res) {
         if (err) return cb(err);
-        res.content.should.match(/\[micromatch\]/);
+        assert(res.content.match(/\[micromatch\]/));
         cb();
       });
   });
@@ -183,7 +194,7 @@ describe('helper', function() {
     app.page('abc', {content: 'foo {{related list}} bar'})
       .render({list: ['micromatch', 'flflflfl']}, function(err, res) {
         if (err) return cb(err);
-        res.content.should.match(/\[micromatch\]/);
+        assert(res.content.match(/\[micromatch\]/));
         cb();
       });
   });
@@ -193,7 +204,7 @@ describe('helper', function() {
     app.post('xyz', {content: 'foo <%= related(list) %> bar'})
       .render({list: ['micromatch']}, function(err, res) {
         if (err) return cb(err);
-        res.content.should.match(/\[micromatch\]/);
+        assert(res.content.match(/\[micromatch\]/));
         cb();
       });
   });
@@ -229,7 +240,7 @@ describe('helper', function() {
     app.post('xyz', {content: 'foo <%= related(list) %> bar'})
       .render(function(err, res) {
         if (err) return cb(err);
-        res.content.should.match(/\[micromatch\]/);
+        assert(res.content.match(/\[micromatch\]/));
         cb();
       });
   });
